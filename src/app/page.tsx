@@ -9,9 +9,12 @@ export default function Home() {
           <div className="text-center">
             <h1 className="text-slate-200 font-bold underline lg:text-9xl md:text-8xl text-6xl mb-10 mx-1">Book Gather</h1>
             <div className="flex flex-col items-center">
-              <button className="bg-blue-400 text-slate-200 rounded-md my-2 px-4 py-1 text-center text-xl w-40">ログイン</button>
-              <button className="bg-blue-400 text-slate-200 rounded-md my-2 px-4 py-1 text-center text-xl w-40">サインアップ</button>
-              <Link href={"/"} className="px-4 py-1 text-center text-xl text-blue-400 underline mt-2">
+              <button className="bg-blue-400 text-slate-200 rounded-md my-2 px-4 py-1 text-center text-xl w-40
+              hover:bg-blue-800 transition-all duration-300">ログイン</button>
+              <button className="bg-blue-400 text-slate-200 rounded-md my-2 px-4 py-1 text-center text-xl w-40
+              hover:bg-blue-800 transition-all duration-300">サインアップ</button>
+              <Link href={"/"} className="px-4 py-1 text-center text-xl text-blue-400 underline mt-2
+              hover:text-blue-800 transition-all duration-300">
                 ゲストとして
               </Link>
             </div>
