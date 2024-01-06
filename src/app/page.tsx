@@ -18,6 +18,9 @@ export default function Home() {
                 ゲストとして
               </Link>
             </div>
+            <div className="pt-5 mt-5 flex justify-center">
+            <Image src="/img/readingMan.png" alt="Reading Man" width={80} height={80} />
+            </div>
           </div>
         </main>
         <footer className="text-center py-1 bg-slate-200">
