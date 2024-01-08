@@ -9,7 +9,7 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!username || !password) {
@@ -17,7 +17,28 @@ export default function Login() {
             return;
         }
 
-        router.push("/home");
+        try {
+            const response = await fetch('http://localhost:3000/api/user', {
+                method: 'POST',
+                body: JSON.stringify({ username, password }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            if(!response.ok) {
+                setError("ログインに失敗しました");
+                return;
+            }
+
+            router.push("/home");
+            console.log("ログイン成功しました")
+
+        } catch (err) {
+            console.error(err);
+            setError("エラーが発生しました");
+        }
+
     };
 
     return (

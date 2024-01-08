@@ -9,7 +9,7 @@ export default function SignUp() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!username || !password) {
@@ -17,7 +17,29 @@ export default function SignUp() {
             return;
         }
 
-        router.push("/home");
+        try {
+            const response = await fetch('http://localhost:3000/api/enrol', {
+                method: 'POST',
+                body: JSON.stringify({ username, password }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            if(!response.ok) {
+                setError("登録に失敗しました");
+                return;
+            }
+
+            router.push("/home");
+            console.log("登録成功しました")
+
+        } catch (err) {
+            console.error(err);
+            setError("エラーが発生しました");
+        }
+
+        
     };
 
     return (
