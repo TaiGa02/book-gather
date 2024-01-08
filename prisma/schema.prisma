@@ -1,20 +1,14 @@
-# 読書管理サイト
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-# 仕様
-・ログイン機能\n
-・本を検索(楽天のapiを使う)\n
-・読んだ本、読みたい本に追加\n
-・読み終わった際はレーティングする\n
-・全ユーザーの読んだ、読みたい本の注目度で全期間、年間、月間でのランキングを出す\n
-・ログインせずゲスト状態だとランキングだけ見れる\n
+generator client {
+  provider = "prisma-client-js"
+}
 
-# 仕様予定技術
-・next.js\n
-・Supabase\n
-・prisma\n
-・typescript\n
-
-# スキーマ設定
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
 model User {
   id Int @id @default(autoincrement()) //ユーザーのID
@@ -52,6 +46,5 @@ model Userbooks {
   finish Boolean//本を読み終えたかどうか
   want Boolean//今後読みたいかどうか
   favorite Boolean//お気に入り
-  finish_date DateTime//読み終わった日付（全ユーザーのfinishから全期間、年間、月間のランキングをつける際に利用する）
+  finish_date DateTime? //読み終わった日付（全ユーザーのfinishから全期間、年間、月間のランキングをつける際に利用する）
 }
-
