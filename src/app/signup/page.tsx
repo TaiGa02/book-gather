@@ -53,8 +53,11 @@ export default function SignUp() {
                     <h2 className="px-4 m-auto font-bold">サインアップ</h2>
                         <div className="bg-slate-200 py-4 px-5 my-3 rounded-lg shadow-lg">
                             <form onSubmit={handleSubmit}>
+                                <label className="text-slate-950">※半角英数字で入力してください</label>
                                 <input
                                     type="text"
+                                    maxLength={20}
+                                    pattern="^[a-zA-Z0-9]+$"
                                     placeholder="ユーザー名を記入してください"
                                     className="rounded-md px-4 w-full py-2 my-2 text-slate-950"
                                     value={username}
@@ -62,6 +65,7 @@ export default function SignUp() {
                                 />
                                 <input
                                     type="password"
+                                    maxLength={20}
                                     placeholder="パスワードを記入してください"
                                     className="rounded-md px-4 w-full py-2 my-2 text-slate-950"
                                     value={password}
