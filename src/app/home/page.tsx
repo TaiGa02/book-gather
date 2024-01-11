@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home(){
 
@@ -12,7 +13,7 @@ export default function Home(){
         user_name = localStorage.getItem("username") ?? "guest";
     }
 
-    console.log(user_name);
+    //console.log(user_name);
 
     useEffect (() => {
         if (user_name === "guest") {
@@ -34,20 +35,25 @@ export default function Home(){
 
     useEffect(() => {
         const handleResize = () => {
-            // 画面の幅が一定サイズ以上になったら、モバイルメニューを閉じる
             if (window.innerWidth > 768) {
                 closeMenu();
             }
         };
 
-        // ウィンドウのリサイズイベントを監視
         window.addEventListener("resize", handleResize);
 
-        // コンポーネントがアンマウントされたときにイベントリスナーをクリーンアップする
         return () => {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
+
+    const router = useRouter();
+    const [ keyword, setKeyword ] = useState("")
+
+    const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        router.push(`/result?keyword=${keyword}`);
+    };
 
     return (
         <>
@@ -81,14 +87,17 @@ export default function Home(){
 
                         <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                             <div className="hidden md:ml-6 md:block">
-                                <form className="text-center">
+                                <form className="text-center" onSubmit={handleSubmit}>
                                     <input
                                         type="search"
                                         name="query"
                                         className="rounded py-2 px-4 text-left border-red-500"
                                         placeholder="キーワードを入力して下さい"
+                                        value={keyword}
+                                        onChange={(e) => setKeyword(e.target.value)}
                                     />
-                                    <button className="ml-2 text-white bg-red-500 rounded py-2 px-6 hover:opacity-75">
+                                    <button className="ml-2 text-white bg-red-500 rounded py-2 px-6 hover:opacity-75"
+                                            type="submit">
                                         Search
                                     </button>
                                 </form>
