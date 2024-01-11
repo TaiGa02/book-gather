@@ -6,7 +6,9 @@ import { useRouter } from 'next/navigation';
 
 export default function Home() {
 
-  localStorage.clear();
+  if (typeof window !== 'undefined') {
+    localStorage.clear();
+  }
 
   const router = useRouter();
 
