@@ -17,6 +17,7 @@ model User {
   number_book Int @default(0)//各ユーザーのそれぞれの本の読んだ冊数
 
   books Userbooks[]//各ユーザーの読んだ本の情報
+  wantbooks Wantreadbooks[]//各ユーザーの気になる本
 }
 
 model Book {
@@ -42,9 +43,19 @@ model Userbooks {
   book Book @relation(fields: [book_id], references: [id])
   book_id Int//ある本に関してのデータ
 
-  user_rate Int//１ユーザーのつけた評価
+  user_rate Int?//１ユーザーのつけた評価
   finish Boolean//本を読み終えたかどうか
-  want Boolean//今後読みたいかどうか
   favorite Boolean//お気に入り
   finish_date DateTime? //読み終わった日付（全ユーザーのfinishから全期間、年間、月間のランキングをつける際に利用する）
+}
+
+model Wantreadbooks {
+  id Int @default(autoincrement())//主キー
+  user User @relation(fields: [user_id], references: [id])
+  user_id Int @unique//あるユーザーに関してのデータ
+  
+
+  title String// 本のタイトル
+  author String//本の著者
+  picture_url String//本の画像
 }
