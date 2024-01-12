@@ -93,9 +93,13 @@ export default function Result() {
         router.push(`/result?keyword=${keyword}`);
     };
 
+    const handleFinish = (item: Item) => {
+        router.push(`/finish?title=${item.Item.title}&author=${item.Item.author}&imgUrl=${item.Item.largeImageUrl}`)
+    };
+
     return (
         <>
-            <nav className="bg-green-500 sticky">
+            <nav className="bg-green-500 sticky top-0 z-50">
                 <div className="mx-auto max-w-7xl px-2 md:px-6 lg:px-8">
                     <div className="relative flex h-16 items-center justify-between">
                         <div className="absolute inset-y-0 left-0 flex items-center md:hidden">
@@ -167,20 +171,20 @@ export default function Result() {
             </nav>
             <main>
                 <div className="flex flex-col justify-center items-center">
-                    <h1 className="my-2 py-4 font-bold text-xl">「{decodeURI(bookName ?? "")}」の検索結果：{apiData?.Items.length}件</h1>
+                    <h1 className="my-2 py-4 font-bold text-2xl">「{decodeURI(bookName ?? "")}」の検索結果：{apiData?.Items.length}件</h1>
                 </div>
                 <div className="mx-10 px-5">
                 {apiData && apiData.Items && (
                     <div>
                         {apiData.Items.map((item, index) => (
-                            <div className="m-auto flex flex-row py-5 my-5 outline outline-green-600 rounded-md" key={index}>
-                                <div className="px-3 mx-2">
+                            <div className="m-auto flex sm:flex-row flex-col py-5 my-5 outline outline-green-600 rounded-md" key={index}>
+                                <div className="px-3 mx-2 m-auto flex justify-center">
                                     <img src={item.Item.largeImageUrl} alt={`Cover of ${item.Item.title}`} />
                                 </div>
-                                <div>
-                                    <p className="py-1"><strong>タイトル:  </strong>{item.Item.title}</p>
-                                    <p className="py-1"><strong>著者:  </strong>{item.Item.author}</p>
-                                    <button className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">読んだ</button>
+                                <div className="m-2">
+                                    <p className="py-2 px-2 text-xl"><strong>タイトル:  </strong>{item.Item.title}</p>
+                                    <p className="py-1 px-2 text-xl"><strong>著者:  </strong>{item.Item.author}</p>
+                                    <button onClick={() => handleFinish(item)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">読んだ</button>
                                     <button className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 hover:bg-blue-800 duration-300 transition-all">気になる</button>
                                 </div>
                             </div>
