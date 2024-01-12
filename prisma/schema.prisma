@@ -25,12 +25,12 @@ model Book {
   title String// 本のタイトル
   author String//本の著者
   picture_url String//本の画像
-  overall_rate Float @default(0)//全期間の評価の平均
-  yearly_rate Float @default(0)//年間のレート（年が変わるとクリーン、０となる）
-  monthly_rate Float @default(0)//月間のレート（月が替わるとクリーン、０となる）
-  read_count Int @default(0)//全期間で読まれた数
-  yearly_count Int @default(0)//年間の読まれた数
-  monthly_count Int @default(0)//月間の読まれた数
+  overall_rate Float//全期間の評価の平均
+  yearly_rate Float//年間のレート（年が変わるとクリーン、０となる）
+  monthly_rate Float//月間のレート（月が替わるとクリーン、０となる）
+  read_count Int//全期間で読まれた数
+  yearly_count Int//年間の読まれた数
+  monthly_count Int//月間の読まれた数
 
   users Userbooks[]
 }
@@ -43,7 +43,7 @@ model Userbooks {
   book Book @relation(fields: [book_id], references: [id])
   book_id Int//ある本に関してのデータ
 
-  user_rate Int?//１ユーザーのつけた評価
+  user_rate Int//１ユーザーのつけた評価
   finish Boolean//本を読み終えたかどうか
   favorite Boolean//お気に入り
   finish_date DateTime? //読み終わった日付（全ユーザーのfinishから全期間、年間、月間のランキングをつける際に利用する）

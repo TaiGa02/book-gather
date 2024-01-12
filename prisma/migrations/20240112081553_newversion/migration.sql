@@ -14,12 +14,12 @@ CREATE TABLE "Book" (
     "title" TEXT NOT NULL,
     "author" TEXT NOT NULL,
     "picture_url" TEXT NOT NULL,
-    "overall_rate" DOUBLE PRECISION NOT NULL DEFAULT 0,
-    "yearly_rate" DOUBLE PRECISION NOT NULL DEFAULT 0,
-    "monthly_rate" DOUBLE PRECISION NOT NULL DEFAULT 0,
-    "read_count" INTEGER NOT NULL DEFAULT 0,
-    "yearly_count" INTEGER NOT NULL DEFAULT 0,
-    "monthly_count" INTEGER NOT NULL DEFAULT 0,
+    "overall_rate" DOUBLE PRECISION NOT NULL,
+    "yearly_rate" DOUBLE PRECISION NOT NULL,
+    "monthly_rate" DOUBLE PRECISION NOT NULL,
+    "read_count" INTEGER NOT NULL,
+    "yearly_count" INTEGER NOT NULL,
+    "monthly_count" INTEGER NOT NULL,
 
     CONSTRAINT "Book_pkey" PRIMARY KEY ("id")
 );
@@ -29,7 +29,7 @@ CREATE TABLE "Userbooks" (
     "id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "book_id" INTEGER NOT NULL,
-    "user_rate" INTEGER,
+    "user_rate" INTEGER NOT NULL,
     "finish" BOOLEAN NOT NULL,
     "favorite" BOOLEAN NOT NULL,
     "finish_date" TIMESTAMP(3),
