@@ -4,19 +4,21 @@ import React from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function Finish() {
 
     const searchParams = useSearchParams();
-    let bookName = searchParams.get("title");
+    let title = searchParams.get("title");
     let author = searchParams.get("author");
-    let imgUrl = searchParams.get("imgUrl");
+    let picture_url = searchParams.get("imgUrl");
 
-    console.log(bookName);
+    console.log(title);
     console.log(author);
-    console.log(imgUrl);
+    console.log(picture_url);
 
     const [ isLinkDisabled, setIsLinkDisabled ] = useState(false);
+    const [error, setError] = useState("");
 
     let user_name: string = "guest";
     if (typeof window !== 'undefined' && localStorage.getItem("username")) {
@@ -118,8 +120,39 @@ export default function Finish() {
         console.log(rating);
     };
 
+    const handleBook = async () => {
+
+        try {
+            toast.loading("保存中です・・・")
+            const response = await fetch('http://localhost:3000/api/finish' , {
+                method: "POST",
+                body: JSON.stringify({ title, author, picture_url, rating, user_name }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+
+            if(!response.ok) {
+                setError("登録に失敗しました");
+                return;
+            }
+
+            toast.success("保存しました！");
+
+            
+            router.push("/home");
+            router.refresh();
+
+        } catch (error) {
+            console.error("エラーが発生しました:", error);
+            setError("登録に失敗しました");
+        }
+    };
+
     return (
         <>
+            <Toaster/>
              <nav className="bg-green-500 sticky top-0 z-50">
                 <div className="mx-auto max-w-7xl px-2 md:px-6 lg:px-8">
                     <div className="relative flex h-16 items-center justify-between">
@@ -198,10 +231,10 @@ export default function Finish() {
                     </div>
                     <div className="flex sm:flex-row flex-col p-5 m-5 outline outline-green-600 rounded-md">
                         <div className="px-3 mx-2 m-auto flex justify-center">
-                            {imgUrl && <img src={imgUrl} alt={`Cover of ${bookName}`}/>}
+                            {picture_url && <img src={picture_url} alt={`Cover of ${title}`}/>}
                         </div>
                         <div className="m-2">
-                            <p className="py-2 px-2 text-2xl"><strong>タイトル:  </strong>{bookName}</p>
+                            <p className="py-2 px-2 text-2xl"><strong>タイトル:  </strong>{title}</p>
                             <p className="py-2 px-2 text-2xl"><strong>著者:  </strong>{author}</p>
                         </div>
                     </div>
@@ -228,7 +261,8 @@ export default function Finish() {
                         </svg>
                     </div>
                     <div className="m-2 pt-3">
-                        <button className="p-1 text-slate-100 bg-blue-400 rounded-md px-2 mx-2 hover:bg-blue-800 duration-300 transition-all">登録</button>
+                        <button className="p-1 text-slate-100 bg-blue-400 rounded-md px-2 mx-2 hover:bg-blue-800 duration-300 transition-all"
+                        onClick={handleBook}>登録</button>
                         <button className="p-1 text-slate-100 bg-blue-400 rounded-md px-2 mx-2 hover:bg-blue-800 duration-300 transition-all">お気に入りとして登録</button>
                     </div>
                 </div>
