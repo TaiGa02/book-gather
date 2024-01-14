@@ -88,6 +88,27 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
                 finish_date: new Date(),
             },
         });
+        //気になる、読みたいに既にその本があるとき
+        const isWant = await prisma.wantreadbooks.findFirst({
+            where:{
+                user_id: userId,
+                title: title,
+                author: author,
+                picture_url: picture_url,
+            },
+        });
+        const isWantId = isWant?.id
+        if(isWant){
+            await prisma.wantreadbooks.delete({
+                where:{
+                    id: isWantId,
+                    user_id: userId,
+                    title: title,
+                    author: author,
+                    picture_url: picture_url,
+                },
+            });
+        }
         return NextResponse.json({ message: "Success", userBook }, { status: 201 });
     } catch (err) {
         console.log(err);
