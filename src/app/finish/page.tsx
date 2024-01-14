@@ -140,7 +140,37 @@ export default function Finish() {
 
             toast.success("保存しました！");
 
-            
+
+            router.push("/home");
+            router.refresh();
+
+        } catch (error) {
+            console.error("エラーが発生しました:", error);
+            setError("登録に失敗しました");
+        }
+    };
+
+    const handleFavorite = async () => {
+
+        try {
+            toast.loading("保存中です・・・")
+            const response = await fetch('http://localhost:3000/api/favorite' , {
+                method: "POST",
+                body: JSON.stringify({ title, author, picture_url, rating, user_name }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+
+            if(!response.ok) {
+                setError("登録に失敗しました");
+                return;
+            }
+
+            toast.success("保存しました！");
+
+
             router.push("/home");
             router.refresh();
 
@@ -263,7 +293,8 @@ export default function Finish() {
                     <div className="m-2 pt-3">
                         <button className="p-1 text-slate-100 bg-blue-400 rounded-md px-2 mx-2 hover:bg-blue-800 duration-300 transition-all"
                         onClick={handleBook}>登録</button>
-                        <button className="p-1 text-slate-100 bg-blue-400 rounded-md px-2 mx-2 hover:bg-blue-800 duration-300 transition-all">お気に入りとして登録</button>
+                        <button className="p-1 text-slate-100 bg-blue-400 rounded-md px-2 mx-2 hover:bg-blue-800 duration-300 transition-all"
+                        onClick={handleFavorite}>お気に入りとして登録</button>
                     </div>
                 </div>
             </main>
