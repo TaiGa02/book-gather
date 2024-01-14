@@ -109,43 +109,64 @@ export default function Result() {
     };
 
     const handleWant = async (item: Item) => {
-        if (user_name === "guest"){
+        if (user_name === "guest") {
             alert("ゲストとして入場しています。\nログインまたはサインアップしてください");
         } else {
-
-            const { title, author, largeImageUrl: picture_url } = item.Item
+            const { title, author, largeImageUrl: picture_url } = item.Item;
+    
             try {
-                const res = await fetch('http://localhost:3000/api/wantbooks' , {
-                method: 'POST',
-                body: JSON.stringify({ title, author, picture_url, user_name }),
-                headers:{ 
-                    'Content-Type': 'application/json',
-                    },
-                });
-                const data = await res.json();
-                if(data.hasData){
-                    alert("この本は既に気になるに追加されています")
-                }
-                else{
-                    toast.loading("気になるに追加中です・・・")
-                const response = await fetch('http://localhost:3000/api/want' , {
-                    method: "POST",
+                // 既に読まれているか確認
+                const userbookResponse = await fetch('http://localhost:3000/api/userbooks', {
+                    method: 'POST',
                     body: JSON.stringify({ title, author, picture_url, user_name }),
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
                 });
-
-                if(!response.ok) {
-                    setError("登録に失敗しました");
-                    return;
-                }
     
-                toast.success("追加しました！");
-                router.refresh();
+                const userbookData = await userbookResponse.json();
+    
+                // 既に読まれている場合はアラート表示
+                if (userbookData.hasData) {
+                    alert("この本は既に読み終えています");
+                } else {
+                    // 「読みたい」リストに既に含まれているか確認
+                    const wantbookResponse = await fetch('http://localhost:3000/api/wantbooks', {
+                        method: 'POST',
+                        body: JSON.stringify({ title, author, picture_url, user_name }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+    
+                    const wantbookData = await wantbookResponse.json();
+    
+                    // 既に「読みたい」リストに含まれている場合はアラート表示
+                    if (wantbookData.alreadyRead || wantbookData.hasData) {
+                        alert("気になるに追加されています");
+                    } else {
+                        // 上記のいずれでもない場合は「読みたい」リストに追加
+                        toast.loading("気になるに追加中です・・・");
+    
+                        const addToWantListResponse = await fetch('http://localhost:3000/api/want', {
+                            method: "POST",
+                            body: JSON.stringify({ title, author, picture_url, user_name }),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                        });
+    
+                        if (!addToWantListResponse.ok) {
+                            setError("登録に失敗しました");
+                            return;
+                        }
+    
+                        toast.success("追加しました！");
+                        router.refresh();
+                    }
                 }
             } catch (err) {
-                console.error("Error fetching data:", err);
+                console.error("データの取得中にエラーが発生しました:", err);
             }
         }
     };
