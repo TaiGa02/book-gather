@@ -3,6 +3,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Toaster, toast } from "react-hot-toast";
 
 interface Item {
     Item: {
@@ -27,6 +28,7 @@ export default function Result() {
     const defaultUrl = `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&title=${bookName}&applicationId=${process.env.NEXT_PUBLIC_APP_ID}`;
 
     const [apiData, setApiData] = useState<ApiResponse | null>(null);
+    const [error, setError] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -92,8 +94,40 @@ export default function Result() {
         }
     };
 
+    const handleWant = async (item: Item) => {
+        if (user_name === "guest"){
+            alert("ゲストとして入場しています。\nログインまたはサインアップしてください");
+        } else {
+
+            const { title, author, largeImageUrl: picture_url } = item.Item
+            try {
+                toast.loading("気になるに追加中です・・・")
+                const response = await fetch('http://localhost:3000/api/want' , {
+                    method: "POST",
+                    body: JSON.stringify({ title, author, picture_url, user_name }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+
+                if(!response.ok) {
+                    setError("登録に失敗しました");
+                    return;
+                }
+    
+                toast.success("追加しました！");
+                router.refresh();
+
+
+            } catch (err) {
+                
+            }
+        }
+    };
+
     return (
         <>
+            <Toaster/>
             <nav className="bg-green-500 sticky top-0 z-50">
                 <div className="mx-auto max-w-7xl px-2 md:px-6 lg:px-8">
                     <div className="relative flex h-16 items-center justify-between">
@@ -183,7 +217,7 @@ export default function Result() {
                                     <p className="py-2 px-2 text-xl"><strong>タイトル:  </strong>{item.Item.title}</p>
                                     <p className="py-1 px-2 text-xl"><strong>著者:  </strong>{item.Item.author}</p>
                                     <button onClick={() => handleFinish(item)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">読んだ</button>
-                                    <button className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 hover:bg-blue-800 duration-300 transition-all">気になる、読みたい</button>
+                                    <button onClick={() => handleWant(item)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 hover:bg-blue-800 duration-300 transition-all">気になる、読みたい</button>
                                 </div>
                             </div>
                         ))}
