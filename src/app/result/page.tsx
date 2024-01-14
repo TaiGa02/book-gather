@@ -86,11 +86,25 @@ export default function Result() {
         router.push(`/result?keyword=${keyword}`);
     };
 
-    const handleFinish = (item: Item) => {
+    const handleFinish = async (item: Item) => {
         if (user_name === "guest") {
             alert("ゲストとして入場しています。\nログインまたはサインアップをしてください");
         } else {
-            router.push(`/finish?title=${item.Item.title}&author=${item.Item.author}&imgUrl=${item.Item.largeImageUrl}`);
+            const { title, author, largeImageUrl: picture_url } = item.Item
+            const response = await fetch('http://localhost:3000/api/userbooks' , {
+                method: 'POST',
+                body: JSON.stringify({ title, author, picture_url, user_name }),
+                headers:{ 
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+            if(data.hasData){
+                alert("この本は既に読み終えています")
+            } else{
+                router.push(`/finish?title=${item.Item.title}&author=${item.Item.author}&imgUrl=${item.Item.largeImageUrl}`);
+            }
         }
     };
 
@@ -101,7 +115,19 @@ export default function Result() {
 
             const { title, author, largeImageUrl: picture_url } = item.Item
             try {
-                toast.loading("気になるに追加中です・・・")
+                const res = await fetch('http://localhost:3000/api/wantbooks' , {
+                method: 'POST',
+                body: JSON.stringify({ title, author, picture_url, user_name }),
+                headers:{ 
+                    'Content-Type': 'application/json',
+                    },
+                });
+                const data = await res.json();
+                if(data.hasData){
+                    alert("この本は既に気になるに追加されています")
+                }
+                else{
+                    toast.loading("気になるに追加中です・・・")
                 const response = await fetch('http://localhost:3000/api/want' , {
                     method: "POST",
                     body: JSON.stringify({ title, author, picture_url, user_name }),
@@ -117,10 +143,9 @@ export default function Result() {
     
                 toast.success("追加しました！");
                 router.refresh();
-
-
+                }
             } catch (err) {
-                
+                console.error("Error fetching data:", err);
             }
         }
     };
