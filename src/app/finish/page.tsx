@@ -112,65 +112,76 @@ export default function Finish() {
     };
 
     const handleBook = async () => {
+        if(rating !== 0){
 
-        try {
-            toast.loading("保存中です・・・")
-            const response = await fetch('http://localhost:3000/api/finish' , {
-                method: "POST",
-                body: JSON.stringify({ title, author, picture_url, rating, user_name }),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            });
-
-
-            if(!response.ok) {
+            try {
+                toast.loading("保存中です・・・")
+                const response = await fetch('http://localhost:3000/api/finish' , {
+                    method: "POST",
+                    body: JSON.stringify({ title, author, picture_url, rating, user_name }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+    
+    
+                if(!response.ok) {
+                    setError("登録に失敗しました");
+                    return;
+                }
+    
+                toast.success("保存しました！");
+    
+    
+                router.push("/home");
+                router.refresh();
+    
+            } catch (error) {
+                console.error("エラーが発生しました:", error);
                 setError("登録に失敗しました");
-                return;
             }
-
-            toast.success("保存しました！");
-
-
-            router.push("/home");
-            router.refresh();
-
-        } catch (error) {
-            console.error("エラーが発生しました:", error);
-            setError("登録に失敗しました");
+        }else{
+            alert("評価がつけられていません\n評価をつけてください");
         }
+            
     };
 
     const handleFavorite = async () => {
 
-        try {
-            toast.loading("保存中です・・・")
-            const response = await fetch('http://localhost:3000/api/favorite' , {
-                method: "POST",
-                body: JSON.stringify({ title, author, picture_url, rating, user_name }),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            });
+        if(rating !== 0){
 
-
-            if(!response.ok) {
+            try {
+                toast.loading("保存中です・・・")
+                const response = await fetch('http://localhost:3000/api/favorite' , {
+                    method: "POST",
+                    body: JSON.stringify({ title, author, picture_url, rating, user_name }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+    
+    
+                if(!response.ok) {
+                    setError("登録に失敗しました");
+                    return;
+                }
+    
+                toast.success("保存しました！");
+    
+    
+                router.push("/home");
+                router.refresh();
+    
+            } catch (error) {
+                console.error("エラーが発生しました:", error);
                 setError("登録に失敗しました");
-                return;
             }
-
-            toast.success("保存しました！");
-
-
-            router.push("/home");
-            router.refresh();
-
-        } catch (error) {
-            console.error("エラーが発生しました:", error);
-            setError("登録に失敗しました");
+        }else{
+            alert("評価がつけられていません\n評価をつけてください");
         }
-    };
 
+    };
+    
     return (
         <>
             <Toaster/>
