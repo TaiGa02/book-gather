@@ -29,7 +29,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                 href="#link1"
                 role="tablist"
               >
-                全期間
+                読んだ本
               </a>
             </li>
             <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
@@ -45,7 +45,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                 href="#link2"
                 role="tablist"
               >
-                年間
+                お気に入り
               </a>
             </li>
             <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
@@ -61,7 +61,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                 href="#link3"
                 role="tablist"
               >
-                月間
+                気になる、読みたい
               </a>
             </li>
           </ul>
@@ -69,13 +69,13 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
             <div className="px-4 py-5 flex-auto">
               <div className="tab-content tab-space">
                 <div className={openTab === 1 ? "block" : "hidden"} id="link1">
-                    {/* ここに全期間の本のアイテムを設置　*/}
+                    {/* ここに読んだ本のアイテムを設置　*/}
                 </div>
                 <div className={openTab === 2 ? "block" : "hidden"} id="link2">
-                  {/* ここに年間の本のアイテムを設置　*/}
+                  {/* ここにお気に入り本のアイテムを設置　*/}
                 </div>
                 <div className={openTab === 3 ? "block" : "hidden"} id="link3">
-                  {/* ここに月間の本のアイテムを設置　*/}
+                  {/* ここに読みたい本のアイテムを設置　*/}
                 </div>
               </div>
             </div>
@@ -85,10 +85,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
     );
   };
 
-
-export default function Home(){
-
-
+  export default function MyPage(){
     let user_name: string = "guest";
     if (typeof window !== 'undefined' && localStorage.getItem("username")) {
         user_name = localStorage.getItem("username") ?? "guest";
