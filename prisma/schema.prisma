@@ -50,9 +50,9 @@ model Userbooks {
 }
 
 model Wantreadbooks {
-  id Int @default(autoincrement())//主キー
+  id Int @id @default(autoincrement())//主キー
   user User @relation(fields: [user_id], references: [id])
-  user_id Int @unique//あるユーザーに関してのデータ
+  user_id Int//あるユーザーに関してのデータ
   
 
   title String// 本のタイトル

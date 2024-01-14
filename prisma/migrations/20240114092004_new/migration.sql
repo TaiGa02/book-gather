@@ -43,14 +43,13 @@ CREATE TABLE "Wantreadbooks" (
     "user_id" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
     "author" TEXT NOT NULL,
-    "picture_url" TEXT NOT NULL
+    "picture_url" TEXT NOT NULL,
+
+    CONSTRAINT "Wantreadbooks_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_name_key" ON "User"("name");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Wantreadbooks_user_id_key" ON "Wantreadbooks"("user_id");
 
 -- AddForeignKey
 ALTER TABLE "Userbooks" ADD CONSTRAINT "Userbooks_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
