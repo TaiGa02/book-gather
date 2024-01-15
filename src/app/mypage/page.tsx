@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from 'next/image';
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -9,8 +10,65 @@ interface TabsProps {
     bgcolor: string;
   };
 
+interface Book {
+    id: number;
+    title: string;
+    author: string;
+    picture_url: string;
+}
+
+interface UserBook {
+    id: number;
+    book_id: number;
+    favorite: boolean;
+}
+
+interface WantToReadBook {
+    id: number;
+    title: string;
+    author: string;
+    picture_url: string;
+}
+
 const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
+    let user_name: string = "guest";
+    if (typeof window !== 'undefined' && localStorage.getItem("username")) {
+        user_name = localStorage.getItem("username") ?? "guest";
+    }
     const [openTab, setOpenTab] = useState(1);
+    const [readBooks, setReadBooks] = useState<Book[]>([]);
+    const [favoriteBooks, setFavoriteBooks] = useState<UserBook[]>([]);
+    const [wantToReadBooks, setWantToReadBooks] = useState<WantToReadBook[]>([]);
+
+    const fetchBooks = async () => {
+        try {
+            const response = await fetch("http://localhost:3000/api/mypage", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "User-Name": user_name,
+            },
+        });
+
+            if(response.ok){
+                const data = await response.json();
+                console.log("Fetched data:", data);
+                setReadBooks(data.books);
+                setFavoriteBooks(data.userbooks.filter((book: UserBook) => book.favorite));
+                console.log(data.userbooks.filter((book: UserBook) => book.favorite));
+                setWantToReadBooks(data.wantreadbooks);
+            } else {
+                console.log("Failed to fetch data");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchBooks();
+      }, []);
+    
   
     return (
       <div className="flex flex-wrap">
@@ -70,12 +128,36 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
               <div className="tab-content tab-space">
                 <div className={openTab === 1 ? "block" : "hidden"} id="link1">
                     {/* ここに読んだ本のアイテムを設置　*/}
+                    {readBooks.map((book) =>(
+                        <div key={book.id}>
+                            {book && (
+                            <div>
+                            <p>{book.title}</p>
+                            <p>Author: {book.author}</p>
+                            <img src={book.picture_url} alt={book.title} />
+                            </div>
+                        )}
+                        </div>
+                    ))}
                 </div>
                 <div className={openTab === 2 ? "block" : "hidden"} id="link2">
                   {/* ここにお気に入り本のアイテムを設置　*/}
+                  
                 </div>
                 <div className={openTab === 3 ? "block" : "hidden"} id="link3">
                   {/* ここに読みたい本のアイテムを設置　*/}
+                  {wantToReadBooks.map((wantToReadBook) => (
+                    <div key={wantToReadBook.id}>
+                        {wantToReadBook && (
+                            <div>
+                                <p>{wantToReadBook.title}</p>
+                                <p>Author: {wantToReadBook.author}</p>
+                                <img src={wantToReadBook.picture_url} alt={wantToReadBook.title} />
+                                {/* Add other details you want to display */}
+                            </div>
+                        )}
+                    </div>
+                ))}
                 </div>
               </div>
             </div>
@@ -201,7 +283,18 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                 </div>
             </nav>
             <main>
-                <Tabs bgcolor="bg-green-600" txcolor ="text-green-600"/>
+                <div className="flex flex-col m-5 p-3">
+                    <div className="flex flex-row mb-3 pb-3 justify-center bg-green-500 rounded-2xl">
+                        <Image src="/img/stackedBook.png" alt="stackedBook" width={400} height={500} />
+                        <div className="flex flex-col items-center justify-evenly">
+                            <p className="text-2xl text-slate-100">{user_name}さんが読んだ本は</p>
+                            <p className="text-2xl text-right text-slate-100">冊です</p>
+                        </div>
+                    </div>
+                    <div>
+                        <Tabs bgcolor="bg-green-600" txcolor ="text-green-600"/>
+                    </div>
+                </div>
             </main>
             <footer className="text-center py-1 bg-slate-200">
                     <p>@TaiGa02</p>
