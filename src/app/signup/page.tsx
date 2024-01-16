@@ -10,11 +10,25 @@ export default function SignUp() {
     const [error, setError] = useState("");
     localStorage.setItem("username",username);
 
+    // パスワード強度検証の関数
+    const isStrongPassword = (password: string) => {
+        // パスワード強度の条件を実装します
+        // 少なくとも8文字で、文字と数字が含まれ、大文字も含まれる
+        const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*[A-Z]+[A-Za-z\d]*$/;
+        return password.length >= 8 && regex.test(password);
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!username || !password) {
             setError("ユーザーネームとパスワードを入力してください");
+            return;
+        }
+
+        // パスワードの強度を確認
+        if (!isStrongPassword(password)) {
+            setError("パスワードは強力ではありません。少なくとも8文字で大文字と数字を含んで記入してください。");
             return;
         }
 
@@ -67,7 +81,7 @@ export default function SignUp() {
                                 <input
                                     type="password"
                                     maxLength={20}
-                                    placeholder="パスワードを記入してください"
+                                    placeholder="パスワードを少なくとも8文字で大文字と数字を含んで記入してください"
                                     className="rounded-md px-4 w-full py-2 my-2 text-slate-950"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
