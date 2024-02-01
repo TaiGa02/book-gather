@@ -3,13 +3,6 @@ import { NextResponse, NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
 
-export async function main(){
-    try{
-        await prisma.$connect();
-    } catch(err){
-        return Error("DB接続に失敗しました");
-    }
-}
 
 //レート更新のための関数
 export function calculateRate(numBook: number,currRate: number,newRate: number){
@@ -22,7 +15,7 @@ export function calculateRate(numBook: number,currRate: number,newRate: number){
 export const POST = async (req: NextRequest, res: NextResponse) => {
     try {
 
-        await main();
+        await prisma.$connect();
 
         const { title, author, picture_url, rating, user_name } = await req.json();
         const user = await prisma.user.findFirst({ where: { name: user_name } });

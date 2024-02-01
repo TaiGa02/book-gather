@@ -3,19 +3,11 @@ import { NextResponse, NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
 
-export async function main(){
-    try {
-        await prisma.$connect();
-    } catch(err) {
-        return Error("DB接続に失敗しました");
-    }
-}
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
     try {
+        await prisma.$connect();
         const { username, password } = await req.json();
-
-        await main();
         
         const isExist = await prisma.user.findFirst({
             where: {
