@@ -26,7 +26,7 @@ export const GET = async (req: Request, res: NextResponse) => {
             },
         });
         const wantreadbooks = await prisma.wantreadbooks.findMany({ where: { user_id: userId } });
-        return NextResponse.json({ message: "Success", books,userbooks,wantreadbooks }, {status: 200});
+        return NextResponse.json({ message: "Success", books,userbooks,wantreadbooks,user }, {status: 200});
 
 
     } catch(err){

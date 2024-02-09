@@ -30,6 +30,11 @@ interface WantToReadBook {
     picture_url: string;
 }
 
+interface User {
+    id: number;
+    number_book: number;
+}
+
 const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
     let user_name: string = "guest";
     if (typeof window !== 'undefined' && localStorage.getItem("username")) {
@@ -175,6 +180,34 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
 
     //console.log(user_name);
 
+    const [user, setUser] = useState<User>();
+
+    const fetchUser = async () => {
+        try {
+            const response = await fetch("http://localhost:3000/api/mypage", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "User-Name": user_name,
+            },
+        });
+
+            if(response.ok){
+                const data = await response.json();
+                console.log("Fetched data:", data);
+                setUser(data.user)
+            } else {
+                console.log("Failed to fetch data");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchUser();
+      }, []);
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -288,7 +321,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                         <Image src="/img/stackedBook.png" alt="stackedBook" width={400} height={500} />
                         <div className="flex flex-col items-center justify-evenly">
                             <p className="text-2xl text-slate-100">{user_name}さんが読んだ本は</p>
-                            <p className="text-2xl text-right text-slate-100">冊です</p>
+                            <p className="text-2xl text-right text-slate-100">{user?.number_book}冊です</p>
                         </div>
                     </div>
                     <div>
