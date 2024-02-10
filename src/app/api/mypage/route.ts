@@ -14,8 +14,6 @@ export const GET = async (req: Request, res: NextResponse) => {
         const user = await prisma.user.findFirst({ where: { name: user_name } });
 
         const userId = user?.id;
-
-        const userbooks = await prisma.userbooks.findMany({ where: { user_id: userId } });
         const books = await prisma.book.findMany({ 
             where: { 
                 users: {
@@ -25,8 +23,19 @@ export const GET = async (req: Request, res: NextResponse) => {
                 },
             },
         });
+        const favBooks = await prisma.book.findMany({
+            where: {
+                users: {
+                    some: {
+                        user_id: userId,
+                        favorite: true,
+                    }
+                }
+            }
+        });
+
         const wantreadbooks = await prisma.wantreadbooks.findMany({ where: { user_id: userId } });
-        return NextResponse.json({ message: "Success", books,userbooks,wantreadbooks,user }, {status: 200});
+        return NextResponse.json({ message: "Success", books,favBooks,wantreadbooks,user }, {status: 200});
 
 
     } catch(err){

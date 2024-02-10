@@ -17,12 +17,6 @@ interface Book {
     picture_url: string;
 }
 
-interface UserBook {
-    id: number;
-    book_id: number;
-    favorite: boolean;
-}
-
 interface WantToReadBook {
     id: number;
     title: string;
@@ -42,7 +36,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
     }
     const [openTab, setOpenTab] = useState(1);
     const [readBooks, setReadBooks] = useState<Book[]>([]);
-    const [favoriteBooks, setFavoriteBooks] = useState<UserBook[]>([]);
+    const [favoriteBooks, setFavoriteBooks] = useState<Book[]>([]);
     const [wantToReadBooks, setWantToReadBooks] = useState<WantToReadBook[]>([]);
 
     const fetchBooks = async () => {
@@ -59,8 +53,8 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                 const data = await response.json();
                 console.log("Fetched data:", data);
                 setReadBooks(data.books);
-                setFavoriteBooks(data.userbooks.filter((book: UserBook) => book.favorite));
-                console.log(data.userbooks.filter((book: UserBook) => book.favorite));
+                setFavoriteBooks(data.favBooks);
+                console.log(data.favBooks);
                 setWantToReadBooks(data.wantreadbooks);
             } else {
                 console.log("Failed to fetch data");
@@ -147,6 +141,17 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                 </div>
                 <div className={openTab === 2 ? "block" : "hidden"} id="link2">
                   {/* ここにお気に入り本のアイテムを設置　*/}
+                  {favoriteBooks.map((book) =>(
+                        <div key={book.id}>
+                            {book && (
+                            <div>
+                            <p>{book.title}</p>
+                            <p>Author: {book.author}</p>
+                            <img src={book.picture_url} alt={book.title} />
+                            </div>
+                        )}
+                        </div>
+                    ))}
                   
                 </div>
                 <div className={openTab === 3 ? "block" : "hidden"} id="link3">
