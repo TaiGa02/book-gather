@@ -9,8 +9,39 @@ interface TabsProps {
     bgcolor: string;
   };
 
+interface Book {
+  id: number;
+  title: string;
+  author: string;
+  picture_url: string;
+};
+
 const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
     const [openTab, setOpenTab] = useState(1);
+    const [allBooks, setAllBooks] = useState<Book[]>([]);
+
+    const fetchBooks = async() => {
+      try {
+
+        const response = await fetch("http://localhost:3000/api/home", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",}
+            });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setAllBooks(data.allBooks);
+        }
+        
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    useEffect(() => {
+      fetchBooks();
+    }, []);
   
     return (
       <div className="flex flex-wrap">
@@ -70,6 +101,17 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
               <div className="tab-content tab-space">
                 <div className={openTab === 1 ? "block" : "hidden"} id="link1">
                     {/* ここに全期間の本のアイテムを設置　*/}
+                    {allBooks.map((book) =>(
+                      <div key={book.id}>
+                        {book && (
+                          <div>
+                            <p>{book.title}</p>
+                            <p>Author: {book.author}</p>
+                            <img src={book.picture_url} alt={book.title} />
+                          </div>
+                        )}
+                      </div>
+                    ))}
                 </div>
                 <div className={openTab === 2 ? "block" : "hidden"} id="link2">
                   {/* ここに年間の本のアイテムを設置　*/}
