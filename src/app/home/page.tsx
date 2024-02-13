@@ -14,11 +14,16 @@ interface Book {
   title: string;
   author: string;
   picture_url: string;
+  overall_rate: number;
+  yearly_rate: number;
+  monthly_rate: number;
 };
 
 const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
     const [openTab, setOpenTab] = useState(1);
     const [allBooks, setAllBooks] = useState<Book[]>([]);
+    const [yearlyBooks, setYearlyBooks] = useState<Book[]>([]);
+    const [monthlyBooks, setMonthlyBooks] = useState<Book[]>([]);
 
     const fetchBooks = async() => {
       try {
@@ -32,6 +37,8 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
         if (response.ok) {
           const data = await response.json();
           setAllBooks(data.allBooks);
+          setYearlyBooks(data.yearlyBooks);
+          setMonthlyBooks(data.monthlyBooks);
         }
         
       } catch (err) {
@@ -41,6 +48,14 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
 
     useEffect(() => {
       fetchBooks();
+    }, []);
+
+    const reset = async () => {
+      await fetch("/api/reset", { method: "POST" });
+    };
+
+    useEffect(() => {
+      reset();
     }, []);
   
     return (
@@ -115,9 +130,31 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                 </div>
                 <div className={openTab === 2 ? "block" : "hidden"} id="link2">
                   {/* ここに年間の本のアイテムを設置　*/}
+                  {yearlyBooks.map((book) =>(
+                      <div key={book.id}>
+                        {book && (
+                          <div>
+                            <p>{book.title}</p>
+                            <p>Author: {book.author}</p>
+                            <img src={book.picture_url} alt={book.title} />
+                          </div>
+                        )}
+                      </div>
+                    ))}
                 </div>
                 <div className={openTab === 3 ? "block" : "hidden"} id="link3">
                   {/* ここに月間の本のアイテムを設置　*/}
+                  {monthlyBooks.map((book) =>(
+                      <div key={book.id}>
+                        {book && (
+                          <div>
+                            <p>{book.title}</p>
+                            <p>Author: {book.author}</p>
+                            <img src={book.picture_url} alt={book.title} />
+                          </div>
+                        )}
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
