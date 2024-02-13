@@ -36,9 +36,13 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
         
         if (response.ok) {
           const data = await response.json();
-          setAllBooks(data.allBooks);
-          setYearlyBooks(data.yearlyBooks);
-          setMonthlyBooks(data.monthlyBooks);
+          const sortedAllBooks = data.allBooks.sort((a:Book, b:Book) => b.overall_rate - a.overall_rate);
+          const sortedYearlyBooks = data.yearlyBooks.sort((a:Book, b:Book) => b.yearly_rate - a.yearly_rate);
+          const sortedMonthlyBooks = data.monthlyBooks.sort((a:Book, b:Book) => b.monthly_rate - a.monthly_rate);
+
+          setAllBooks(sortedAllBooks);
+          setYearlyBooks(sortedYearlyBooks);
+          setMonthlyBooks(sortedMonthlyBooks);
         }
         
       } catch (err) {
