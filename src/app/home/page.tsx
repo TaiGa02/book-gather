@@ -232,28 +232,40 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                   {/* ここに年間の本のアイテムを設置　*/}
                   {yearlyBooks.map((book) =>(
                       <div key={book.id}>
-                        {book && (
-                          <div>
-                            <p>{book.title}</p>
-                            <p>Author: {book.author}</p>
-                            <img src={book.picture_url} alt={book.title} />
-                          </div>
-                        )}
-                      </div>
+                      {book && (
+                          <div className="m-auto flex sm:flex-row flex-col py-5 my-5 outline outline-green-600 rounded-md">
+                            <div className="px-3 mx-2 m-auto flex justify-center">
+                              <img src={book.picture_url} alt={book.title} />
+                            </div>
+                            <div className="m-2">
+                                    <p className="py-2 px-2 text-xl"><strong>タイトル:  </strong>{book.title}</p>
+                                    <p className="py-1 px-2 text-xl"><strong>著者:  </strong>{book.author}</p>
+                                    <button onClick={() => handleFinish(book)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">読んだ</button>
+                                    <button onClick={() => handleWant(book)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 hover:bg-blue-800 duration-300 transition-all">気になる、読みたい</button>
+                            </div>
+                        </div>
+                      )}
+                    </div>
                     ))}
                 </div>
                 <div className={openTab === 3 ? "block" : "hidden"} id="link3">
                   {/* ここに月間の本のアイテムを設置　*/}
                   {monthlyBooks.map((book) =>(
                       <div key={book.id}>
-                        {book && (
-                          <div>
-                            <p>{book.title}</p>
-                            <p>Author: {book.author}</p>
-                            <img src={book.picture_url} alt={book.title} />
-                          </div>
-                        )}
-                      </div>
+                      {book && (
+                          <div className="m-auto flex sm:flex-row flex-col py-5 my-5 outline outline-green-600 rounded-md">
+                            <div className="px-3 mx-2 m-auto flex justify-center">
+                              <img src={book.picture_url} alt={book.title} />
+                            </div>
+                            <div className="m-2">
+                                    <p className="py-2 px-2 text-xl"><strong>タイトル:  </strong>{book.title}</p>
+                                    <p className="py-1 px-2 text-xl"><strong>著者:  </strong>{book.author}</p>
+                                    <button onClick={() => handleFinish(book)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">読んだ</button>
+                                    <button onClick={() => handleWant(book)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 hover:bg-blue-800 duration-300 transition-all">気になる、読みたい</button>
+                            </div>
+                        </div>
+                      )}
+                    </div>
                     ))}
                 </div>
               </div>
