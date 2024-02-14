@@ -25,6 +25,90 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
     const [yearlyBooks, setYearlyBooks] = useState<Book[]>([]);
     const [monthlyBooks, setMonthlyBooks] = useState<Book[]>([]);
 
+    const router = useRouter();
+
+    const handleFinish = async (book: Book) => {
+      if (user_name === "guest") {
+          alert("ゲストとして入場しています。\nログインまたはサインアップをしてください");
+      } else {
+          const { title, author, largeImageUrl: picture_url } = item.Item
+          const response = await fetch('http://localhost:3000/api/userbooks' , {
+              method: 'POST',
+              body: JSON.stringify({ title, author, picture_url, user_name }),
+              headers:{ 
+                  'Content-Type': 'application/json',
+              },
+          });
+
+          const data = await response.json();
+          if(data.hasData){
+              alert("この本は既に読み終えています")
+          } else{
+              router.push(`/finish?title=${book.title}&author=${book.author}&imgUrl=${book.largeImageUrl}`);
+          }
+      }
+  };
+
+  const handleWant = async (book: Book) => {
+      if (user_name === "guest") {
+          alert("ゲストとして入場しています。\nログインまたはサインアップしてください");
+      } else {
+          const { title, author, picture_url } = book;
+  
+          try {
+              // 既に読まれているか確認
+              const userbookResponse = await fetch('http://localhost:3000/api/userbooks', {
+                  method: 'POST',
+                  body: JSON.stringify({ title, author, picture_url, user_name }),
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+              });
+  
+              const userbookData = await userbookResponse.json();
+  
+              // 既に読まれている場合はアラート表示
+              if (userbookData.hasData) {
+                  alert("この本は既に読み終えています");
+              } else {
+                  // 「読みたい」リストに既に含まれているか確認
+                  const wantbookResponse = await fetch('http://localhost:3000/api/wantbooks', {
+                      method: 'POST',
+                      body: JSON.stringify({ title, author, picture_url, user_name }),
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                  });
+  
+                  const wantbookData = await wantbookResponse.json();
+  
+                  // 既に「読みたい」リストに含まれている場合はアラート表示
+                  if (wantbookData.alreadyRead || wantbookData.hasData) {
+                      alert("気になるに追加されています");
+                  } else {
+                      // 上記のいずれでもない場合は「読みたい」リストに追加
+  
+                      const addToWantListResponse = await fetch('http://localhost:3000/api/want', {
+                          method: "POST",
+                          body: JSON.stringify({ title, author, picture_url, user_name }),
+                          headers: {
+                              'Content-Type': 'application/json'
+                          },
+                      });
+  
+                      if (!addToWantListResponse.ok) {
+                          setError("登録に失敗しました");
+                          return;
+                      }
+                      router.refresh();
+                  }
+              }
+          } catch (err) {
+              console.error("データの取得中にエラーが発生しました:", err);
+          }
+      }
+  };
+
     const fetchBooks = async() => {
       try {
 
@@ -123,10 +207,16 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                     {allBooks.map((book) =>(
                       <div key={book.id}>
                         {book && (
-                          <div>
-                            <p>{book.title}</p>
-                            <p>Author: {book.author}</p>
-                            <img src={book.picture_url} alt={book.title} />
+                            <div className="m-auto flex sm:flex-row flex-col py-5 my-5 outline outline-green-600 rounded-md">
+                              <div className="px-3 mx-2 m-auto flex justify-center">
+                                <img src={book.picture_url} alt={book.title} />
+                              </div>
+                              <div className="m-2">
+                                      <p className="py-2 px-2 text-xl"><strong>タイトル:  </strong>{book.title}</p>
+                                      <p className="py-1 px-2 text-xl"><strong>著者:  </strong>{book.author}</p>
+                                      <button onClick={() => handleFinish(item)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">読んだ</button>
+                                      <button onClick={() => handleWant(item)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 hover:bg-blue-800 duration-300 transition-all">気になる、読みたい</button>
+                              </div>
                           </div>
                         )}
                       </div>
