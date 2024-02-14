@@ -24,14 +24,20 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
     const [allBooks, setAllBooks] = useState<Book[]>([]);
     const [yearlyBooks, setYearlyBooks] = useState<Book[]>([]);
     const [monthlyBooks, setMonthlyBooks] = useState<Book[]>([]);
+    const [error, setError] = useState("");
 
     const router = useRouter();
+
+    let user_name: string = "guest";
+    if (typeof window !== 'undefined' && localStorage.getItem("username")) {
+        user_name = localStorage.getItem("username") ?? "guest";
+    }
 
     const handleFinish = async (book: Book) => {
       if (user_name === "guest") {
           alert("ゲストとして入場しています。\nログインまたはサインアップをしてください");
       } else {
-          const { title, author, largeImageUrl: picture_url } = item.Item
+          const { title, author, picture_url } = book;
           const response = await fetch('http://localhost:3000/api/userbooks' , {
               method: 'POST',
               body: JSON.stringify({ title, author, picture_url, user_name }),
@@ -44,7 +50,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
           if(data.hasData){
               alert("この本は既に読み終えています")
           } else{
-              router.push(`/finish?title=${book.title}&author=${book.author}&imgUrl=${book.largeImageUrl}`);
+              router.push(`/finish?title=${book.title}&author=${book.author}&imgUrl=${book.picture_url}`);
           }
       }
   };
@@ -214,8 +220,8 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                               <div className="m-2">
                                       <p className="py-2 px-2 text-xl"><strong>タイトル:  </strong>{book.title}</p>
                                       <p className="py-1 px-2 text-xl"><strong>著者:  </strong>{book.author}</p>
-                                      <button onClick={() => handleFinish(item)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">読んだ</button>
-                                      <button onClick={() => handleWant(item)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 hover:bg-blue-800 duration-300 transition-all">気になる、読みたい</button>
+                                      <button onClick={() => handleFinish(book)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">読んだ</button>
+                                      <button onClick={() => handleWant(book)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 hover:bg-blue-800 duration-300 transition-all">気になる、読みたい</button>
                               </div>
                           </div>
                         )}
