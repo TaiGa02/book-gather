@@ -130,10 +130,15 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                     {readBooks.map((book) =>(
                         <div key={book.id}>
                             {book && (
-                            <div>
-                            <p>{book.title}</p>
-                            <p>Author: {book.author}</p>
-                            <img src={book.picture_url} alt={book.title} />
+                            <div className="m-auto flex sm:flex-row flex-col py-5 my-5 outline outline-green-600 rounded-md">
+                                <div className="px-3 mx-2 m-auto flex justify-center">
+                                <img src={book.picture_url} alt={book.title} />
+                                </div>
+                                <div className="m-2">
+                                    <p className="py-2 px-2 text-xl"><strong>タイトル:  </strong>{book.title}</p>
+                                    <p className="py-1 px-2 text-xl"><strong>著者:  </strong>{book.author}</p>
+                                    <button className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">お気に入りに追加</button>
+                                </div>
                             </div>
                         )}
                         </div>
@@ -144,11 +149,16 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                   {favoriteBooks.map((book) =>(
                         <div key={book.id}>
                             {book && (
-                            <div>
-                            <p>{book.title}</p>
-                            <p>Author: {book.author}</p>
+                            <div className="m-auto flex sm:flex-row flex-col py-5 my-5 outline outline-green-600 rounded-md">
+                            <div className="px-3 mx-2 m-auto flex justify-center">
                             <img src={book.picture_url} alt={book.title} />
                             </div>
+                            <div className="m-2">
+                                <p className="py-2 px-2 text-xl"><strong>タイトル:  </strong>{book.title}</p>
+                                <p className="py-1 px-2 text-xl"><strong>著者:  </strong>{book.author}</p>
+                                <button className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">お気に入りから削除</button>
+                            </div>
+                        </div>
                         )}
                         </div>
                     ))}
@@ -159,12 +169,16 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                   {wantToReadBooks.map((wantToReadBook) => (
                     <div key={wantToReadBook.id}>
                         {wantToReadBook && (
-                            <div>
-                                <p>{wantToReadBook.title}</p>
-                                <p>Author: {wantToReadBook.author}</p>
-                                <img src={wantToReadBook.picture_url} alt={wantToReadBook.title} />
-                                {/* Add other details you want to display */}
+                            <div className="m-auto flex sm:flex-row flex-col py-5 my-5 outline outline-green-600 rounded-md">
+                            <div className="px-3 mx-2 m-auto flex justify-center">
+                            <img src={wantToReadBook.picture_url} alt={wantToReadBook.title} />
                             </div>
+                            <div className="m-2">
+                                <p className="py-2 px-2 text-xl"><strong>タイトル:  </strong>{wantToReadBook.title}</p>
+                                <p className="py-1 px-2 text-xl"><strong>著者:  </strong>{wantToReadBook.author}</p>
+                                <button className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">読んだ</button>
+                            </div>
+                        </div>
                         )}
                     </div>
                 ))}
