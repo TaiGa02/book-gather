@@ -30,6 +30,7 @@ interface User {
 }
 
 const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
+    const router = useRouter();
     let user_name: string = "guest";
     if (typeof window !== 'undefined' && localStorage.getItem("username")) {
         user_name = localStorage.getItem("username") ?? "guest";
@@ -67,6 +68,28 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
     useEffect(() => {
         fetchBooks();
       }, []);
+    
+      const handleFinish = async (book: Book) => {
+            let user_name: string = "guest";
+            if (typeof window !== 'undefined' && localStorage.getItem("username")) {
+                user_name = localStorage.getItem("username") ?? "guest";
+            }
+            const { title, author, picture_url } = book
+            const response = await fetch('http://localhost:3000/api/userbooks' , {
+                method: 'POST',
+                body: JSON.stringify({ title, author, picture_url, user_name }),
+                headers:{ 
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+            if(data.hasData){
+                alert("この本は既に読み終えています")
+            } else{
+                router.push(`/finish?title=${book.title}&author=${book.author}&imgUrl=${book.picture_url}`);
+            }
+    };
     
   
     return (
@@ -176,7 +199,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                             <div className="m-2">
                                 <p className="py-2 px-2 text-xl"><strong>タイトル:  </strong>{wantToReadBook.title}</p>
                                 <p className="py-1 px-2 text-xl"><strong>著者:  </strong>{wantToReadBook.author}</p>
-                                <button className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">読んだ</button>
+                                <button onClick={() => handleFinish(wantToReadBook)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">読んだ</button>
                             </div>
                         </div>
                         )}
