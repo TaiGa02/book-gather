@@ -90,6 +90,23 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                 router.push(`/finish?title=${book.title}&author=${book.author}&imgUrl=${book.picture_url}`);
             }
     };
+
+    const handlefav = async (book: Book) => {
+        let user_name: string = "guest";
+            if (typeof window !== 'undefined' && localStorage.getItem("username")) {
+                user_name = localStorage.getItem("username") ?? "guest";
+            }
+            const { title, author, picture_url } = book;
+            const response = await fetch('http://localhost:3000/api/checkFavorite' , {
+                method: 'POST',
+                body: JSON.stringify({ title, author, picture_url, user_name }),
+                headers:{ 
+                    'Content-Type': 'application/json',
+                },
+            });
+        
+        router.refresh();
+    };
     
   
     return (
@@ -160,7 +177,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                                 <div className="m-2">
                                     <p className="py-2 px-2 text-xl"><strong>タイトル:  </strong>{book.title}</p>
                                     <p className="py-1 px-2 text-xl"><strong>著者:  </strong>{book.author}</p>
-                                    <button className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">お気に入りに追加</button>
+                                    <button onClick={() => handlefav(book)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">お気に入りに追加</button>
                                 </div>
                             </div>
                         )}
@@ -179,7 +196,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                             <div className="m-2">
                                 <p className="py-2 px-2 text-xl"><strong>タイトル:  </strong>{book.title}</p>
                                 <p className="py-1 px-2 text-xl"><strong>著者:  </strong>{book.author}</p>
-                                <button className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">お気に入りから削除</button>
+                                <button onClick={() => handlefav(book)} className="text-slate-100 bg-blue-400 rounded-md px-2 mx-2 my-4 hover:bg-blue-800 duration-300 transition-all">お気に入りから削除</button>
                             </div>
                         </div>
                         )}
