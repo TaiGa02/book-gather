@@ -105,6 +105,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                 },
             });
         
+        router.push('/mypage');
         router.refresh();
     };
     
