@@ -4,7 +4,6 @@ import React from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Toaster, toast } from "react-hot-toast";
 
 export default function Finish() {
 
@@ -115,7 +114,6 @@ export default function Finish() {
         if(rating !== 0){
 
             try {
-                toast.loading("保存中です・・・")
                 const response = await fetch('http://localhost:3000/api/finish' , {
                     method: "POST",
                     body: JSON.stringify({ title, author, picture_url, rating, user_name }),
@@ -129,8 +127,6 @@ export default function Finish() {
                     setError("登録に失敗しました");
                     return;
                 }
-    
-                toast.success("保存しました！");
     
     
                 router.push("/home");
@@ -151,7 +147,6 @@ export default function Finish() {
         if(rating !== 0){
 
             try {
-                toast.loading("保存中です・・・")
                 const response = await fetch('http://localhost:3000/api/favorite' , {
                     method: "POST",
                     body: JSON.stringify({ title, author, picture_url, rating, user_name }),
@@ -165,8 +160,6 @@ export default function Finish() {
                     setError("登録に失敗しました");
                     return;
                 }
-    
-                toast.success("保存しました！");
     
     
                 router.push("/home");
@@ -184,7 +177,6 @@ export default function Finish() {
 
     return (
         <>
-            <Toaster/>
             <nav className="bg-green-500 sticky top-0 z-50">
                 <div className="mx-auto max-w-7xl px-2 md:px-6 lg:px-8">
                     <div className="relative flex h-16 items-center justify-between">
