@@ -3,7 +3,6 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Toaster, toast } from "react-hot-toast";
 
 interface Item {
     Item: {
@@ -146,7 +145,6 @@ export default function Result() {
                         alert("気になるに追加されています");
                     } else {
                         // 上記のいずれでもない場合は「読みたい」リストに追加
-                        toast.loading("気になるに追加中です・・・");
     
                         const addToWantListResponse = await fetch('/api/want', {
                             method: "POST",
@@ -160,8 +158,6 @@ export default function Result() {
                             setError("登録に失敗しました");
                             return;
                         }
-    
-                        toast.success("追加しました！");
                         router.refresh();
                     }
                 }
@@ -173,7 +169,6 @@ export default function Result() {
 
     return (
         <>
-            <Toaster/>
             <nav className="bg-green-500 sticky top-0 z-50">
                 <div className="mx-auto max-w-7xl px-2 md:px-6 lg:px-8">
                     <div className="relative flex h-16 items-center justify-between">
