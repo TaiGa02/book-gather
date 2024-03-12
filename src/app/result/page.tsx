@@ -91,7 +91,7 @@ export default function Result() {
             alert("ゲストとして入場しています。\nログインまたはサインアップをしてください");
         } else {
             const { title, author, largeImageUrl: picture_url } = item.Item
-            const response = await fetch('http://localhost:3000/api/userbooks' , {
+            const response = await fetch('/api/userbooks' , {
                 method: 'POST',
                 body: JSON.stringify({ title, author, picture_url, user_name }),
                 headers:{ 
@@ -116,7 +116,7 @@ export default function Result() {
     
             try {
                 // 既に読まれているか確認
-                const userbookResponse = await fetch('http://localhost:3000/api/userbooks', {
+                const userbookResponse = await fetch('/api/userbooks', {
                     method: 'POST',
                     body: JSON.stringify({ title, author, picture_url, user_name }),
                     headers: {
@@ -131,7 +131,7 @@ export default function Result() {
                     alert("この本は既に読み終えています");
                 } else {
                     // 「読みたい」リストに既に含まれているか確認
-                    const wantbookResponse = await fetch('http://localhost:3000/api/wantbooks', {
+                    const wantbookResponse = await fetch('/api/wantbooks', {
                         method: 'POST',
                         body: JSON.stringify({ title, author, picture_url, user_name }),
                         headers: {
@@ -148,7 +148,7 @@ export default function Result() {
                         // 上記のいずれでもない場合は「読みたい」リストに追加
                         toast.loading("気になるに追加中です・・・");
     
-                        const addToWantListResponse = await fetch('http://localhost:3000/api/want', {
+                        const addToWantListResponse = await fetch('/api/want', {
                             method: "POST",
                             body: JSON.stringify({ title, author, picture_url, user_name }),
                             headers: {

@@ -114,7 +114,7 @@ export default function Finish() {
         if(rating !== 0){
 
             try {
-                const response = await fetch('http://localhost:3000/api/finish' , {
+                const response = await fetch('/api/finish' , {
                     method: "POST",
                     body: JSON.stringify({ title, author, picture_url, rating, user_name }),
                     headers: {
@@ -147,7 +147,7 @@ export default function Finish() {
         if(rating !== 0){
 
             try {
-                const response = await fetch('http://localhost:3000/api/favorite' , {
+                const response = await fetch('/api/favorite' , {
                     method: "POST",
                     body: JSON.stringify({ title, author, picture_url, rating, user_name }),
                     headers: {

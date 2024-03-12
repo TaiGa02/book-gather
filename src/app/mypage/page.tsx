@@ -42,7 +42,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
 
     const fetchBooks = async () => {
         try {
-            const response = await fetch("http://localhost:3000/api/mypage", {
+            const response = await fetch("/api/mypage", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -75,7 +75,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                 user_name = localStorage.getItem("username") ?? "guest";
             }
             const { title, author, picture_url } = book
-            const response = await fetch('http://localhost:3000/api/userbooks' , {
+            const response = await fetch('/api/userbooks' , {
                 method: 'POST',
                 body: JSON.stringify({ title, author, picture_url, user_name }),
                 headers:{ 
@@ -97,7 +97,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                 user_name = localStorage.getItem("username") ?? "guest";
             }
             const { title, author, picture_url } = book;
-            const response = await fetch('http://localhost:3000/api/checkFavorite' , {
+            const response = await fetch('/api/checkFavorite' , {
                 method: 'POST',
                 body: JSON.stringify({ title, author, picture_url, user_name }),
                 headers:{ 
@@ -244,7 +244,7 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
 
     const fetchUser = async () => {
         try {
-            const response = await fetch("http://localhost:3000/api/mypage", {
+            const response = await fetch("/api/mypage", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

@@ -19,7 +19,7 @@ export default function Login() {
         }
 
         try {
-            const response = await fetch('http://localhost:3000/api/user', {
+            const response = await fetch('/api/user', {
                 method: 'POST',
                 body: JSON.stringify({ username, password }),
                 headers: {
