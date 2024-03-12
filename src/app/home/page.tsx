@@ -419,7 +419,12 @@ export default function Home(){
                 </div>
             </nav>
             <main>
-                <Tabs bgcolor="bg-green-600" txcolor ="text-green-600"/>
+                <div className="flex flex-col m-5 p-3">
+                  <div className="my-2 py-4 font-bold text-2xl text-center">
+                    <h1>\\全ユーザーのランキング//</h1>
+                  </div>
+                  <Tabs bgcolor="bg-green-600" txcolor ="text-green-600"/>
+                </div>
             </main>
             <footer className="text-center py-1 bg-slate-200">
                     <p>@TaiGa02</p>
