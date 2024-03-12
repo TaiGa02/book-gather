@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 
 //レート更新のための関数
-export function calculateRate(numBook: number,currRate: number,newRate: number){
+function calculateRate(numBook: number,currRate: number,newRate: number){
     let calculatedRate: number = (numBook * currRate + newRate) / (numBook + 1);
     return calculatedRate;
 };
