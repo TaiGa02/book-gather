@@ -8,7 +8,6 @@ export default function SignUp() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    localStorage.setItem("username",username);
 
     // パスワード強度検証の関数
     const isStrongPassword = (password: string) => {
@@ -45,6 +44,8 @@ export default function SignUp() {
                 setError("登録に失敗しました");
                 return;
             }
+
+            localStorage.setItem("username",username);
 
             router.push("/home");
             console.log("登録成功しました")

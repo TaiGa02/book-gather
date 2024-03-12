@@ -8,7 +8,6 @@ export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    localStorage.setItem("username",username);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -31,6 +30,8 @@ export default function Login() {
                 setError("ログインに失敗しました");
                 return;
             }
+
+            localStorage.setItem("username", username);
 
             router.push("/home");
             console.log("ログイン成功しました")
