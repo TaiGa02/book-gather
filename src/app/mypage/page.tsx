@@ -376,16 +376,18 @@ const Tabs : React.FC<TabsProps> = ({ txcolor,bgcolor }) => {
                 </div>
             </nav>
             <main>
-                <div className="flex flex-col m-5 p-3">
-                    <div className="flex flex-row mb-3 pb-3 justify-center bg-green-500 rounded-2xl">
-                        <Image src="/img/stackedBook.png" alt="stackedBook" width={400} height={500} />
-                        <div className="flex flex-col items-center justify-evenly">
-                            <p className="text-2xl text-slate-100">{user_name}さんが読んだ本は</p>
-                            <p className="text-2xl text-right text-slate-100">{user?.number_book}冊です</p>
+                <div className="m-5 p-3">
+                    <div className="mb-3 pb-3 bg-green-500 rounded-2xl">
+                        <div className="flex flex-col md:flex-row items-center justify-center">
+                            <Image src="/img/stackedBook.png" alt="stackedBook" width={400} height={500} />
+                            <div className="flex flex-col items-center justify-evenly">
+                                <p className="text-2xl text-center text-slate-100 mb-3">{user_name}さんが読んだ本は</p>
+                                <p className="text-2xl text-center text-slate-100">{user?.number_book}冊です</p>
+                            </div>
                         </div>
                     </div>
                     <div>
-                        <Tabs bgcolor="bg-green-600" txcolor ="text-green-600"/>
+                        <Tabs bgcolor="bg-green-600" txcolor="text-green-600" />
                     </div>
                 </div>
             </main>
