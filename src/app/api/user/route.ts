@@ -33,3 +33,5 @@ export const POST = async (req: Request, res: NextResponse) => {
         await prisma.$disconnect();
     }
 };
+
+export const revalidate = 0;

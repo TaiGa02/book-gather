@@ -33,3 +33,5 @@ export const GET =async (req: Request, res: NextResponse) => {
     }
     
 }
+
+export const revalidate = 0;
