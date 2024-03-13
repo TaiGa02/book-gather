@@ -11,7 +11,7 @@ export default function SignUp() {
 
     // パスワード強度検証の関数
     const isStrongPassword = (password: string) => {
-        // パスワード強度の条件を実装します
+        // パスワード強度の条件を実装
         // 少なくとも8文字で、文字と数字が含まれ、大文字も含まれる
         const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*[A-Z]+[A-Za-z\d]*$/;
         return password.length >= 8 && regex.test(password);
